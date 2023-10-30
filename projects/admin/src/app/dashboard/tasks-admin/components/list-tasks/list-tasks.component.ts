@@ -54,20 +54,11 @@ export class ListTasksComponent implements OnInit {
     this. getAllTasks();
   }
 
-  // createform() {
-  //   this.tasksFilter = this.fb.group({
-  //     title:[''],
-  //     userId:[''],
-  //     fromDate:[''],
-  //     toDate:['']
-  //   })
-  // }
-
   getAllTasks() {
     this.serviceTasks.getAllTasks().subscribe((res:any)=>{
       console.log(res);
     },error=>{
-
+      console.log(error);
     })
   }
   addTask() {
