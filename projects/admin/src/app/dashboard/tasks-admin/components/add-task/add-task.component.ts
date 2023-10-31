@@ -49,7 +49,7 @@ export class AddTaskComponent implements OnInit {
       this.spinner.hide();
       console.log(res.massage);
       this.toastr.success(res.massage, 'Success');
-      this.dialog.close();
+      this.dialog.close(true);
     },error=>{
       this.toastr.error(error.error.massage,"Error");
       this.spinner.hide();
