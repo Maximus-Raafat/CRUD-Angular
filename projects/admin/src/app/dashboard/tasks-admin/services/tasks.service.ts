@@ -15,4 +15,10 @@ export class TasksService {
   creatTask(model:any){
     return this.http.post(environment.baseApi + "tasks/add-task",model)
   }
+  deleteTask(id:number){
+    return this.http.delete(environment.baseApi +"tasks/delete-task/" + id);
+  }
+  updateTask(model:any,id:number){
+    return this.http.put(environment.baseApi + "tasks/edit-task/" + id ,model)
+  }
 }

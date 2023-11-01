@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTaskComponent } from '../add-task/add-task.component';
 import { TasksService } from '../../services/tasks.service';
+import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 export interface PeriodicElement {
   title: string;
   user: string;
@@ -33,19 +35,30 @@ export class ListTasksComponent implements OnInit {
   constructor(
     public dialog: MatDialog ,
     private fb:FormBuilder,
-    private serviceTasks:TasksService
-    
+    private serviceTasks:TasksService,
+    private spinner:NgxSpinnerService,
+    private toastr:ToastrService
     ) { }
 
   ngOnInit(): void {
     this.getAllTasks();
-   
   }
   getAllTasks() {
     this.serviceTasks.getAllTasks().subscribe((res:any)=>{
       this.dataSource = this.mapingInTask(res.tasks);
     },error=>{
       console.log(error);
+    })
+  }
+  deleteTask(id:number){
+    this.spinner.show();
+    this.serviceTasks.deleteTask(id).subscribe((res)=>{
+    this.getAllTasks();
+    this.spinner.hide();
+    this.toastr.success("Deleted this Task","Success")
+    },error=>{
+      this.spinner.hide();
+      this.toastr.error("Success",error)
     })
   }
   mapingInTask(data:any[]){
@@ -55,7 +68,6 @@ export class ListTasksComponent implements OnInit {
         user:item.userId.username,
       }
     })
-    console.log(newData);
     return newData;
   }
   addTask() {
@@ -68,5 +80,17 @@ export class ListTasksComponent implements OnInit {
           this.getAllTasks()
         }
       })
+  }
+  updateTask(data:any){
+    const dialogRef = this.dialog.open(AddTaskComponent, {
+      width: '750px',
+      data:data
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        this.getAllTasks()
+      }
+    })
   }
 }

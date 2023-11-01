@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TasksService } from '../../services/tasks.service';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 export class AddTaskComponent implements OnInit {
   newTaskForm!:FormGroup;
   constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
     private fb:FormBuilder,
     private tasksService:TasksService,
     public dialog: MatDialogRef<AddTaskComponent> ,
@@ -35,11 +36,25 @@ export class AddTaskComponent implements OnInit {
   
   createForm(){
     this.newTaskForm = this.fb.group({
-      title:['',Validators.required],
-      userId:['',Validators.required],
-      image:['',Validators.required],
-      description:['',Validators.required],
-      deadline:['',Validators.required],
+      title:[this.data?.title || '',Validators.required],
+      userId:[this.data?.userId._id || '',Validators.required],
+      image:[this.data?.image || '',Validators.required],
+      description:[this.data?.description || '',Validators.required],
+      deadline:[this.data? new Date(this.data.deadline.split('-').reverse().join('-')).toISOString() : '',Validators.required],
+    })
+
+  }
+  updateTask(){
+    this.spinner.show();
+    let model = this.prepereFormData();
+    this.tasksService.updateTask(model,this.data._id).subscribe((res:any)=>{
+      this.spinner.hide();
+      console.log(res.massage);
+      this.toastr.success(res.massage, 'Success Update');
+      this.dialog.close(true);
+    },error=>{
+      this.toastr.error(error.error.massage,"Error");
+      this.spinner.hide();
     })
   }
   createTask() {
@@ -59,7 +74,6 @@ export class AddTaskComponent implements OnInit {
     let newDate = moment(this.newTaskForm.value['deadline']).format('DD-MM-YYYY');
     let formData = new FormData();
     Object.entries(this.newTaskForm.value).forEach(([key,value]:any)=>{
-      console.log(key,value);
       if(key == 'deadline'){
         formData.append(key,newDate);
       }else {

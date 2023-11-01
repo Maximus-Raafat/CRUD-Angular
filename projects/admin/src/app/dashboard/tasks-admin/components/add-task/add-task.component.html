@@ -25,8 +25,8 @@
                 </div> 
                 <div class="col-md-12 my-3">
                     <label for="slelecFile" class="btn btn-primary">Slelect Image</label>
-                    <span></span>
                     <input type="file" hidden class="formControl" (change)="slelectImage($event)" id="slelecFile">
+                    <span> {{ this.newTaskForm.value?.image}}</span>
                 </div> 
 
                 <div class="col-md-12">
@@ -50,8 +50,8 @@
 
     <footer class="tw-p-6">
         <div class="d-flex justify-content-center align-items-center">
-            <button mat-flat-button class="btn btn-success py-1 px-5 mx-2" [disabled]="newTaskForm.invalid" (click)="createTask()" >Create</button>
-         
+            <button *ngIf="!data" mat-flat-button class="btn btn-success py-1 px-5 mx-2" [disabled]="newTaskForm.invalid" (click)="createTask()" >Create</button>
+            <button *ngIf="data" mat-flat-button class="btn btn-success py-1 px-5 mx-2" [disabled]="newTaskForm.invalid" (click)="updateTask()" >Update</button>
             <button mat-flat-button class="btn btn-danger py-1 px-5" matDialogClose>Close</button>
           </div>
         
