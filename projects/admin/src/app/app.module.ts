@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { CoreModule } from './core/core.module';
+import { NgxPaginationModule } from 'ngx-pagination'; 
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { CoreModule } from './core/core.module';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
     ToastrModule.forRoot(),
     HttpClientModule,
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple'}),
@@ -28,6 +30,7 @@ import { CoreModule } from './core/core.module';
     CoreModule,
     BrowserAnimationsModule,
   ],
+  exports:[],
   providers: [],
   bootstrap: [AppComponent]
 })

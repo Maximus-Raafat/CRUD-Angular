@@ -9,15 +9,14 @@
                 <div class="col-md-3">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Search</mat-label>
-                        <input matInput  placeholder="title search">
+                        <input matInput  placeholder="title search" (keyup)="search($event.target)">
                     </mat-form-field>
                 </div>  
                 <div class="col-md-3">
-                    
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>By User</mat-label>
-                        <mat-select >
-                            <mat-option *ngFor="let user of users" [value]="user?.id">
+                        <mat-select (selectionChange)="selectUser($event)">
+                            <mat-option *ngFor="let user of users"  [value]="user?.id">
                               {{user?.name}}
                             </mat-option>
                           </mat-select>
@@ -26,8 +25,8 @@
                 <div class="col-md-3">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Status</mat-label>
-                        <mat-select>
-                            <mat-option *ngFor="let item of status" [value]="item?.id">
+                        <mat-select (selectionChange)="selectStatus($event)">
+                            <mat-option *ngFor="let item of status" [value]="item?.name">
                               {{item?.name}}
                             </mat-option>
                           </mat-select>
@@ -37,8 +36,8 @@
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Enter a date range</mat-label>
                         <mat-date-range-input [rangePicker]="picker">
-                          <input matStartDate placeholder="Start date">
-                          <input matEndDate placeholder="End date">
+                          <input matStartDate placeholder="Start date" (dateChange)="selectData($event , 'fromDate')">
+                          <input matEndDate placeholder="End date" (dateChange)="selectData($event , 'toDate')">
                         </mat-date-range-input>
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
@@ -94,8 +93,14 @@
               </ng-container>
           
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns | paginate: { id: 'tasks',
+            itemsPerPage: 10,
+            currentPage: page,
+            totalItems: total };"></tr>
           </table>
-          
+          <div class="d-felx justify-content-center">
+            <pagination-controls (pageChange)="changePage($event)" id="tasks"></pagination-controls>
+
+          </div>
     </div>
 </div>

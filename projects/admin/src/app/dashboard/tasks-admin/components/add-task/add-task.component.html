@@ -52,7 +52,7 @@
         <div class="d-flex justify-content-center align-items-center">
             <button *ngIf="!data" mat-flat-button class="btn btn-success py-1 px-5 mx-2" [disabled]="newTaskForm.invalid" (click)="createTask()" >Create</button>
             <button *ngIf="data" mat-flat-button class="btn btn-success py-1 px-5 mx-2" [disabled]="newTaskForm.invalid" (click)="updateTask()" >Update</button>
-            <button mat-flat-button class="btn btn-danger py-1 px-5" matDialogClose>Close</button>
+            <button mat-flat-button class="btn btn-danger py-1 px-5" (click)="close()">Close</button>
           </div>
         
       </footer>

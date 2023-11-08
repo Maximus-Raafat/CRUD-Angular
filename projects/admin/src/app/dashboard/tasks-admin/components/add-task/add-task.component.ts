@@ -5,6 +5,7 @@ import { TasksService } from '../../services/tasks.service';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
 
 @Component({
   selector: 'app-add-task',
@@ -13,11 +14,13 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class AddTaskComponent implements OnInit {
   newTaskForm!:FormGroup;
+  formValue :any;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     private fb:FormBuilder,
     private tasksService:TasksService,
-    public dialog: MatDialogRef<AddTaskComponent> ,
+    public dialog: MatDialogRef<AddTaskComponent>,
+    public dialog2: MatDialog,
     public matDialog:MatDialog,
     private toastr:ToastrService,
     private spinner:NgxSpinnerService) { }
@@ -42,32 +45,26 @@ export class AddTaskComponent implements OnInit {
       description:[this.data?.description || '',Validators.required],
       deadline:[this.data? new Date(this.data.deadline.split('-').reverse().join('-')).toISOString() : '',Validators.required],
     })
-
+    this.formValue = this.newTaskForm.value;
   }
   updateTask(){
-    this.spinner.show();
     let model = this.prepereFormData();
     this.tasksService.updateTask(model,this.data._id).subscribe((res:any)=>{
-      this.spinner.hide();
       console.log(res.massage);
       this.toastr.success(res.massage, 'Success Update');
       this.dialog.close(true);
     },error=>{
       this.toastr.error(error.error.massage,"Error");
-      this.spinner.hide();
     })
   }
   createTask() {
-    this.spinner.show();
     let model = this.prepereFormData();
     this.tasksService.creatTask(model).subscribe((res:any)=>{
-      this.spinner.hide();
       console.log(res.massage);
       this.toastr.success(res.massage, 'Success');
       this.dialog.close(true);
     },error=>{
       this.toastr.error(error.error.massage,"Error");
-      this.spinner.hide();
     })
   }
   prepereFormData(){
@@ -81,5 +78,27 @@ export class AddTaskComponent implements OnInit {
       }
     })
     return formData;
+  }
+  close(){
+    let hasChange = false;
+    Object.keys(this.formValue).forEach((item)=>{
+      if (this.formValue[item] !== this.newTaskForm.value[item]) {
+        hasChange = true;
+        console.log("run");
+      } 
+    })
+    if(hasChange){
+      const dialogRef = this.dialog2.open(ConfirmationComponent, {
+        width: '750px',
+      });
+      dialogRef.afterClosed().subscribe((result: any) => {
+        if(result == true) {
+          
+        }
+      })
+    } else {
+      this.dialog.close();
+    }
+    
   }
 }
