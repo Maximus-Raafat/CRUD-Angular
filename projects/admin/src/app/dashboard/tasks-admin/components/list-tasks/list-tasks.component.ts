@@ -89,16 +89,12 @@ export class ListTasksComponent implements OnInit {
     this.serviceTasks.getAllTasks(this.filtration).subscribe((res:any)=>{
       this.dataSource = this.mapingInTask(res.tasks);
       this.total = res.totalItems
-    },error=>{
-      console.log(error);
     })
   }
   deleteTask(id:number){
     this.serviceTasks.deleteTask(id).subscribe((res)=>{
     this.getAllTasks();
     this.toastr.success("Deleted this Task","Success")
-    },error=>{
-      this.toastr.error("Success",error)
     })
   }
   mapingInTask(data:any[]){
@@ -114,7 +110,6 @@ export class ListTasksComponent implements OnInit {
     this.page = event;
     this.filtration['page'] = event;
     this.getAllTasks();
-
   }
   addTask() {
       const dialogRef = this.dialog.open(AddTaskComponent, {
