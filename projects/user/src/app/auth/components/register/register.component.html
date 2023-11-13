@@ -11,32 +11,35 @@
                 <h2>Register </h2>
              
         
-                <form>
+                <form [formGroup]="registerForm" (ngSubmit)="creatAnAccount()">
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Username</mat-label>
-                        <input matInput  placeholder="username">
+                        <input matInput formControlName="username" laceholder="username">
                         <mat-error>required</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Email</mat-label>
-                        <input matInput  placeholder="email">
+                        <input matInput formControlName="email" placeholder="email">
                         <mat-error>required</mat-error>
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Password</mat-label>
-                        <input matInput f placeholder="password">
+                        <input matInput formControlName="password" laceholder="password">
                         <mat-error>required</mat-error>
         
                     </mat-form-field>
                     <mat-form-field appearance="outline" class="w-100">
                         <mat-label>Confirm Password</mat-label>
-                        <input matInput   placeholder="confirm password">
+                        <input matInput formControlName="confirmPassword" placeholder="confirm password">
                         <mat-error>required</mat-error>
+                        <div style="color: red;" class="d-flex justify-content-end" *ngIf="registerForm.hasError('notSame')">
+                            Passwords do not match.
+                        </div>
                     </mat-form-field>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" mat-raised-button [disabled]="registerForm.invalid" color="warn">Create Account</button>
+                    </div>
                 </form>
-                <div class="d-flex justify-content-center">
-                    <button mat-raised-button color="warn">Create Account</button>
-                </div>
                 <div class="d-flex justify-content-center">
                     <a routerLink="/auth/login">Have an Account ? </a>
                 </div>

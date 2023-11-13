@@ -28,6 +28,8 @@ const ELEMENT_DATA: PeriodicElement[] = [
 export class ListTasksComponent implements OnInit {
   displayedColumns: string[] = ['position', 'title', 'user' ,'deadLineDate','status', 'actions'];
   dataSource = ELEMENT_DATA;
+  page:any = 1;
+  total:any = 1;
   tasksFilter!:FormGroup
   users:any = [
     {name:"Moahmed" , id:1},
@@ -53,6 +55,11 @@ export class ListTasksComponent implements OnInit {
       fromDate:[''],
       toDate:['']
     })
+  }
+  changePage(event:any){
+    this.page = event;
+    // this.filtration['page'] = event;
+    // this.getAllTasks();
   }
 
   getAllTasks() {

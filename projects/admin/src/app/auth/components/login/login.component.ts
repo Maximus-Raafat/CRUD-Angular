@@ -32,15 +32,15 @@ export class LoginComponent implements OnInit {
     })
   }
   login(){
-    this.spiner.show();
+    // this.spiner.show();
     this.serviceLogin.login(this.loginForm.value).subscribe((res:any)=>{
       localStorage.setItem("token",res.token);
       this.toster.success("Success","Success Login");
       this.router.navigate(['/tasks'])
-      this.spiner.hide();
+      // this.spiner.hide();
     },err=>{
       this.toster.error("Error");
-      this.spiner.hide();
+      // this.spiner.hide();
     })
   }
 }

@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from 'projects/user/src/app/material/material.module';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     CommonModule,
     NgxPaginationModule,
     TasksAdminRoutingModule,
-
+    SharedModule
   ]
 })
 export class TasksAdminModule { }
