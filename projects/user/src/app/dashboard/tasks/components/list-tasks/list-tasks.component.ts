@@ -12,7 +12,7 @@ export class ListTasksComponent implements OnInit {
   dataSource:any = [];
   userData:any;
   page:any = 1;
-  total:any = 1;
+  totalItme:any = 1;
   selectedStatus = "In-Progress";
   tasksFilter!:FormGroup
   users:any = [
@@ -48,8 +48,7 @@ export class ListTasksComponent implements OnInit {
   }
   changePage(event:any){
     this.page = event;
-    // this.filtration['page'] = event;
-    // this.getAllTasks();
+    this.getAllTasks();
   }
   getUserData(){
     let token = JSON.stringify(localStorage.getItem('token'));
@@ -64,7 +63,16 @@ export class ListTasksComponent implements OnInit {
     }
     this.serviceTasks.getUserTasks(this.userData, params).subscribe((res:any)=>{
       this.dataSource = res.tasks;
+      this.totalItme = res.totalItems
       console.log(this.dataSource);
+    })
+  }
+  complete(ele:any){
+    let Modle = {
+      id:ele._id
+    }
+    this.serviceTasks.completeTask(Modle).subscribe((res:any)=>{
+      this.getAllTasks()
     })
   }
 }
