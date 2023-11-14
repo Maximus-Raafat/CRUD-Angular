@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { MaterialModule } from '../../material/material.module';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     CommonModule,
     TasksRoutingModule,
     SharedModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    MaterialModule
   ]
 })
 export class TasksModule { }

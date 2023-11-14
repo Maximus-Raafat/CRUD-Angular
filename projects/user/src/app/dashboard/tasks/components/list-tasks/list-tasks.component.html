@@ -7,9 +7,9 @@
     totalItems: 10 };let index = index">
       <div class="card mt-3" >
         <div class="card-body">
-          <h2 class="card-title">{{item.title}}</h2>
-          <p class="card-subtitle mb-2 text-muted">Dead-Line Date : {{item.deadLineDate}}</p>
-          <p class="card-text">{{item.description }}</p>
+          <h2 class="card-title">{{item?.title}}</h2>
+          <p class="card-subtitle mb-2 text-muted">Dead-Line Date : {{item?.deadline}}</p>
+          <p class="card-text">{{item?.description }}</p>
           <a  class="card-link"  mat-raised-button color="basic">Details</a>
           <button  mat-raised-button color="warn">Complete</button>
         </div>
@@ -20,6 +20,8 @@
     <pagination-controls (pageChange)="changePage($event)" id="tasks"></pagination-controls>
 
   </div>
+  <button mat-stroked-button disabled>Disabled</button>
+
     <!-- <div class="listBox">
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8  w-100 mt-2">
 

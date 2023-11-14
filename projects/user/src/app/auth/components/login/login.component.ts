@@ -36,8 +36,8 @@ export class LoginComponent implements OnInit {
     role:"user",
   }
   this.serviceLogin.loginUser(Modle).subscribe((res:any)=>{
-    this.toaster.success("Success","Success Login");
     localStorage.setItem("token",res.token);
+    this.toaster.success("Success","Success Login");
     this.router.navigate(['/tasks'])
   },error=>{
     console.log(error);
