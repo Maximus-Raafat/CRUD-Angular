@@ -8,11 +8,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { MaterialModule } from '../../material/material.module';
+import { TaskDetailsComponent } from './components/task-details/task-details.component';
 
 
 @NgModule({
   declarations: [
-    ListTasksComponent
+    ListTasksComponent,
+        TaskDetailsComponent
+
   ],
   imports: [
     FormsModule,

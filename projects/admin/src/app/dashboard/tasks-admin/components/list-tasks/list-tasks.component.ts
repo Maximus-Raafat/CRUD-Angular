@@ -6,6 +6,7 @@ import { TasksService } from '../../services/tasks.service';
 import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import * as moment from 'moment';
+import { UsersService } from '../../../manage-users/services/users.service';
 export interface PeriodicElement {
   title: string;
   user: string;
@@ -29,11 +30,7 @@ export class ListTasksComponent implements OnInit {
     page:this.page,
     limit:10
   };
-  users:any = [
-    {name:"fady" , id:"653f3d329140ab11352b00db"},
-    {name:"tia" , id:"653f3d919140ab11352b00de"},
-    {name:"joe" , id:"653f3daa9140ab11352b00e1"},
-  ]
+  users:any = [];
 
   status:any = [
     {name:"Complete"},
@@ -41,34 +38,49 @@ export class ListTasksComponent implements OnInit {
   ]
   constructor(
     public dialog: MatDialog ,
-    private fb:FormBuilder,
     private serviceTasks:TasksService,
-    private spinner:NgxSpinnerService,
-    private toastr:ToastrService
-    ) { }
+    private toastr:ToastrService,
+    private serviceUser:UsersService
+    ) {
+      this.getDataFromSubject();
+     }
 
   ngOnInit(): void {
+    this.getUsers();
     this.getAllTasks();
+  }
+  getUsers(){
+    this.serviceUser.getAllUsersData()
+  }
+  getDataFromSubject() {
+    this.serviceUser.userData.subscribe((res:any)=>{
+      this.users = this.usersMaping(res.data);
+    })
+  }
+  usersMaping(data:any[]){
+    let newArray = data?.map(item=>{
+      return{
+        name:item.username,
+        id:item._id
+      }
+    })
+    return newArray;
   }
   selectStatus(event:any){
     this.page = 1;
     this.filtration['page'] = 1;
-
-    console.log( event.value.trim());
     this.filtration['status'] = event.value.trim();
     this.getAllTasks();
   }
   selectUser(event:any){
     this.page = 1;
     this.filtration['page'] = 1;
-
     this.filtration['userId'] = event.value;
     this.getAllTasks();
   }
   search(event:any){
     this.page = 1;
     this.filtration['page'] = 1;
-
     this.filtration["keyword"] = event.value;
      clearTimeout(this.timeOutId);
      this.timeOutId = setTimeout(() => {
@@ -78,7 +90,7 @@ export class ListTasksComponent implements OnInit {
   selectData(event:any, type:any){
     this.page = 1;
     this.filtration['page'] = 1;
-
+    
     this.filtration[type] = moment(event.value).format('DD-MM-YYYY');
     if (type == "toDate" && this.filtration['toDate'] !== "Invalid date") {
       this.getAllTasks();
@@ -99,11 +111,13 @@ export class ListTasksComponent implements OnInit {
   }
   mapingInTask(data:any[]){
     let newData = data.map((item:any)=>{
+      const username = item.userId ? item.userId.username : null;
       return {
         ...item,
-        user:item.userId.username,
+        user:username,
       }
     })
+
     return newData;
   }
   changePage(event:any){

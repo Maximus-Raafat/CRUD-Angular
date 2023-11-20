@@ -8,7 +8,7 @@ import { environment } from 'projects/admin/src/environments/environment';
 export class TasksService {
 
   constructor(private http:HttpClient) { }
-
+  
   getAllTasks(filter:any){
     let params = new HttpParams()
     Object.entries(filter).forEach(([key,value]:any)=>{

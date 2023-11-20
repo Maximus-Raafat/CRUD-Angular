@@ -4,8 +4,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dial
 import { TasksService } from '../../services/tasks.service';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { UsersService } from '../../../manage-users/services/users.service';
 
 @Component({
   selector: 'app-add-task',
@@ -23,20 +23,32 @@ export class AddTaskComponent implements OnInit {
     public dialog2: MatDialog,
     public matDialog:MatDialog,
     private toastr:ToastrService,
-    private spinner:NgxSpinnerService) { }
+    private serviceUser:UsersService) {
+      this.getDataFromSubject();
+    }
 
-  users:any = [
-    {name:"fady" , id:"653f3d329140ab11352b00db"},
-    {name:"tia" , id:"653f3d919140ab11352b00de"},
-    {name:"joe" , id:"653f3daa9140ab11352b00e1"},
-  ]
+  users:any = []
   ngOnInit(): void {
     this.createForm();
   }
   slelectImage(event:any){
     this.newTaskForm.get('image')?.setValue(event.target.files[0]);
   }
-  
+  getDataFromSubject() {
+    this.serviceUser.userData.subscribe((res:any)=>{
+      this.users = this.usersMaping(res.data);
+    })
+  }
+  usersMaping(data:any[]){
+    let newArray = data?.map(item=>{
+      return{
+        name:item.username,
+        id:item._id
+      }
+    })
+    return newArray;
+  }
+
   createForm(){
     this.newTaskForm = this.fb.group({
       title:[this.data?.title || '',Validators.required],

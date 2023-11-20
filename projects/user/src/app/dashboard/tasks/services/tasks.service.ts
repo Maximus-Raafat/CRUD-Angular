@@ -21,4 +21,7 @@ export class TasksService {
     completeTask(modle:object){
       return this.http.put(environment.baseApi+'/complete',modle);
     }
+    getTasksDetails(id:any){
+      return this.http.get(environment.baseApi+'/task/'+id);
+    }
 }
